@@ -9,7 +9,7 @@ ClubRealWorld Presents:
 
 <img src="/images/christinastrip.png">
 
-[Christina's Tripl](https://christinas-trip.bandcamp.com/) - These bay-area noise popsters led by Chrstina Busler are bringing brutal, transcendent and catchy twee sounds to the Lehigh Valley for the first time. A bundle of contradictions not to be missed. 
+[Christina's Trip](https://christinas-trip.bandcamp.com/) - These bay-area noise popsters led by Chrstina Busler are bringing brutal, transcendent and catchy twee sounds to the Lehigh Valley for the first time. A bundle of contradictions not to be missed. 
 
 [Me at the Zoo](https://vacantstarerecords.bandcamp.com/album/vol-1) - Local rockers led by CRW's own Rob Miller bring their fuzzed-out power pop back to the real world. 
 
