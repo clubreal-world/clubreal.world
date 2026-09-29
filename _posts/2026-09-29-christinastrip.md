@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Christina's Trip - 10/17/22"
-date: 2026-09-12 19:34
+date: 2026-09-27 19:34
 categories: [gig, indie, noise pop, rock]
 blurb: A night of noisy pop music in Bethlehem PA
 ---
