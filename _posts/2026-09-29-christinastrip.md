@@ -7,7 +7,7 @@ blurb: A night of noisy pop music in Bethlehem PA
 ---
 ClubRealWorld Presents:
 
-<img src="/images/christinastrip.png">
+<img src="/images/ctrip.png">
 
 [Christina's Trip](https://christinas-trip.bandcamp.com/) - These bay-area noise popsters led by Chrstina Busler are bringing brutal, transcendent and catchy twee sounds to the Lehigh Valley for the first time. A bundle of contradictions not to be missed. 
 
