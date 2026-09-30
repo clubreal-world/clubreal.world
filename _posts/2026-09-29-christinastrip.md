@@ -9,13 +9,13 @@ ClubRealWorld Presents:
 
 <img src="/images/ctrip.png">
 
-[Christina's Trip](https://christinas-trip.bandcamp.com/) - These bay-area noise popsters led by Chrstina Busler are bringing brutal, transcendent and catchy twee sounds to the Lehigh Valley for the first time. A bundle of contradictions not to be missed. 
+[Christina's Trip](https://christinas-trip.bandcamp.com/) - These bay-area noise popsters led by Chrstina Busler are bringing their brutal but catchy twee sounds to the Lehigh Valley. 
 
-[Me at the Zoo](https://vacantstarerecords.bandcamp.com/album/vol-1) - Local rockers led by CRW's own Rob Miller bring their fuzzed-out power pop back to the real world. 
+[Me at the Zoo](https://vacantstarerecords.bandcamp.com/album/vol-1) - Fuzzed out power-pop from CRW's own Rob Miller and crew. 
 
-[Blue Year](https://blueyear.bandcamp.com/track/f-is-for-villain) - Sideways noise pop power trio from the valley and here to advocate for humane urban development NOW!
+[Blue Year](https://blueyear.bandcamp.com/track/f-is-for-villain) - Blue Year plays the hits for their second-ever show. 
 
-[I didn't water my orchids last week](https://ididntwatermyorchidslastweek.bandcamp.com/) - Lofi bedroom emo pop group that's been gigging around Eastern PA for a minute now. This is there first Club Real World show and we're stoked to have them. 
+[I didn't water my orchids last week](https://ididntwatermyorchidslastweek.bandcamp.com/) - Lofi bedroom emo pop group that's been gigging around Eastern PA for a minute now. This is their first Club Real World show and we're stoked to have them. 
 
 Saturday, October 17
 
