@@ -85,6 +85,61 @@ layout: default
     color: var(--logo-blue);
     background: transparent;
   }
+
+  /* ---- welcome dialog (Windows 95 style) ---- */
+  .w95-overlay {
+    position: fixed; inset: 0; z-index: 10000;
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px;
+    background: rgba(0, 0, 0, .45);
+  }
+  .w95-overlay[hidden] { display: none; }
+
+  .w95-window {
+    --logo-blue: #362df3;
+    box-sizing: border-box;
+    width: min(440px, 100%);
+    max-height: 100%;
+    overflow: auto;
+    padding: 3px;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #fff #000 #000 #fff;
+    box-shadow: inset -1px -1px #808080, inset 1px 1px #dfdfdf, 4px 4px 0 rgba(0, 0, 0, .35);
+    font-family: Tahoma, "MS Sans Serif", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.35;
+    color: #000;
+  }
+  .w95-titlebar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 3px 3px 3px 6px;
+    background: linear-gradient(90deg, #000080, #1084d0);
+    color: #fff; font-weight: bold; font-size: 15px;
+  }
+  .w95-btn {
+    font: inherit; color: #000; cursor: pointer;
+    background: #c0c0c0;
+    border: 2px solid;
+    border-color: #fff #000 #000 #fff;
+    box-shadow: inset -1px -1px #808080, inset 1px 1px #dfdfdf;
+  }
+  .w95-btn:active { border-color: #000 #fff #fff #000; box-shadow: inset 1px 1px #808080, inset -1px -1px #dfdfdf; }
+  .w95-btn:focus-visible { outline: 1px dotted #000; outline-offset: -5px; }
+  .w95-close { width: 22px; height: 20px; padding: 0; line-height: 1; font-weight: bold; font-size: 15px; }
+  .w95-body { padding: 14px 12px 12px; text-align: center; }
+  .w95-body img.w95-logo {
+    display: block; margin: 0 auto 14px; top: 0;
+    width: 150px; height: auto;
+  }
+  .w95-statement {
+    margin: 0 0 10px; padding: 8px 10px;
+    background: #fff;
+    border: 2px solid var(--logo-blue);
+    color: var(--logo-blue);
+    text-align: left;
+  }
+  .w95-ok { min-width: 88px; padding: 4px 12px; margin-top: 6px; }
 </style>
 
 <div class="blog-index" data-view="gallery">
@@ -181,5 +236,53 @@ layout: default
 
     // gallery is the default; only an explicit #list link opens the list view
     setView(location.hash === '#list' ? 'list' : 'gallery');
+  })();
+</script>
+
+<!-- WELCOME DIALOG -->
+<div class="w95-overlay" id="welcome-overlay" hidden>
+  <div class="w95-window" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+    <div class="w95-titlebar">
+      <span id="welcome-title">Club Real World</span>
+      <button type="button" class="w95-btn w95-close" id="welcome-x" aria-label="Close">&times;</button>
+    </div>
+    <div class="w95-body">
+      <img class="w95-logo" src="/images/fixed_logo.png" alt="Club Real World">
+      <p class="w95-statement" lang="en">Club Real World events are all ages and welcome to all our neighbors in the Lehigh Valley, regardless of race, gender, or belief systems.</p>
+      <p class="w95-statement" lang="es">Los eventos de Club Real World son para todas las edades y damos la bienvenida a todos nuestros vecinos del Valle de Lehigh, sin importar su raza, género o creencias.</p>
+      <button type="button" class="w95-btn w95-ok" id="welcome-ok">OK</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var overlay = document.getElementById('welcome-overlay');
+    var okBtn = document.getElementById('welcome-ok');
+    var xBtn = document.getElementById('welcome-x');
+
+    // show once per browser session, so it doesn't reappear every time someone returns to the home page
+    try { if (sessionStorage.getItem('crw-welcome-seen')) { return; } } catch (e) {}
+
+    function close() {
+      overlay.hidden = true;
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', onKey);
+      try { sessionStorage.setItem('crw-welcome-seen', '1'); } catch (e) {}
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') { close(); }
+      else if (e.key === 'Tab') {            // keep keyboard focus inside the dialog
+        e.preventDefault();
+        (document.activeElement === okBtn ? xBtn : okBtn).focus();
+      }
+    }
+
+    okBtn.addEventListener('click', close);
+    xBtn.addEventListener('click', close);
+    document.addEventListener('keydown', onKey);
+    overlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+    okBtn.focus();
   })();
 </script>
