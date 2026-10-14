@@ -118,8 +118,9 @@ layout: default
                 </a>
                 <div class="card-info">
                   <a class="card-title" href="{{ post.url }}">{{ post.title }}</a>
-                  {% if post.ticketlink != blank %}
-                    <a class="tickets-btn" href="{{ post.ticketlink }}" target="_blank" rel="noopener">tickets</a>
+                  {% assign tlink = post.ticketlink | append: '' | strip %}
+                  {% if tlink contains 'http' %}
+                    <a class="tickets-btn" href="{{ tlink }}" target="_blank" rel="noopener">tickets</a>
                   {% endif %}
                 </div>
               </div>
