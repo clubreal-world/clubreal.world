@@ -2,26 +2,125 @@
 layout: default
 ---
 
-<div class="blog-index">
-  {% assign index = true %}
-  {% for post in paginator.posts %}
+<style>
+  /* ---- view toggle ---- */
+  .view-toggle { display: flex; gap: 18px; margin: 0 0 16px; }
+  .view-toggle button {
+    background: none; border: 0; border-bottom: 2px solid transparent;
+    padding: 0 0 2px; font: inherit; color: inherit;
+    opacity: .5; cursor: pointer;
+  }
+  .view-toggle button:hover { opacity: .8; }
+  .view-toggle button[aria-pressed="true"] { opacity: 1; border-bottom-color: currentColor; }
+
+  /* only one view shows at a time; gallery is the default */
+  .blog-index[data-view="gallery"] .post-list { display: none; }
+  .blog-index[data-view="events"]  .post-grid { display: none; }
+
+  /* gallery mode may need the full page width (see notes) */
+  .blog-index[data-view="gallery"] { max-width: none; }
+
+  /* ---- gallery grid ---- */
+  .post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 6px;
+    margin: 0 0 24px;
+  }
+  .post-grid .tile {
+    display: block;
+    aspect-ratio: 1 / 1;      /* try 4 / 5 for poster shapes */
+    overflow: hidden;
+    background: #ddd;
+  }
+  .post-grid .tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;        /* "contain" = never crop */
+    display: block;
+    transition: transform .3s ease, opacity .3s ease;
+  }
+  .post-grid .tile:hover img,
+  .post-grid .tile:focus-visible img { transform: scale(1.04); opacity: .85; }
+</style>
+
+<div class="blog-index" data-view="gallery">
+
+  <div class="view-toggle" role="group" aria-label="Post view">
+    <button type="button" data-view="gallery" aria-pressed="true">gallery</button>
+    <button type="button" data-view="events" aria-pressed="false">events</button>
+  </div>
+
+  <!-- GALLERY VIEW (default) -->
+  <div class="post-grid">
+    {% for post in paginator.posts %}
+      {% assign src = nil %}
+
+      {% comment %} Use an `image:` front-matter field if a post has one, else the first <img> in the post body. {% endcomment %}
+      {% if post.image %}
+        {% assign src = post.image %}
+      {% else %}
+        {% assign parts = post.content | split: '<img' %}
+        {% if parts.size > 1 %}
+          {% assign src = parts[1] | split: 'src="' | last | split: '"' | first %}
+        {% endif %}
+      {% endif %}
+
+      {% if src != blank %}
+        <a class="tile" href="{{ post.url }}" title="{{ post.title | escape }}">
+          <img src="{{ src }}" alt="{{ post.title | escape }}" loading="lazy">
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <!-- DETAILED VIEW (your original layout) -->
+  <div class="post-list">
+    {% assign index = true %}
+    {% for post in paginator.posts %}
     {% assign content = post.content %}
-      <article>
-        {% include article_list_item.html %}
-      </article>
-  {% endfor %}
+    <article>
+    {% include article_list_item.html %}
+    </article>
+    {% endfor %}
+  </div>
 
   <div class="pagination">
     <a href="/blog/archives">archives</a>
     <a href="/blog/categories">categories</a>
-
     {% if paginator.previous_page %}
       <a href="{{ paginator.previous_page_path }}" class="previous">Previous</a>
     {% endif %}
     <span class="page_number ">page: {{ paginator.page }} of {{ paginator.total_pages }}</span>
-
     {% if paginator.next_page %}
       <a href="{{ paginator.next_page_path }}" class="next">older</a>
     {% endif %}
   </div>
+
 </div>
+
+<script>
+  (function () {
+    var root = document.querySelector('.blog-index');
+    var buttons = root.querySelectorAll('.view-toggle button');
+
+    function setView(view) {
+      root.setAttribute('data-view', view);
+      buttons.forEach(function (b) {
+        b.setAttribute('aria-pressed', b.getAttribute('data-view') === view ? 'true' : 'false');
+      });
+    }
+
+    buttons.forEach(function (b) {
+      b.addEventListener('click', function () {
+        var view = b.getAttribute('data-view');
+        setView(view);
+        // keep "events" linkable; plain URL always means gallery
+        history.replaceState(null, '', view === 'events' ? '#events' : location.pathname + location.search);
+      });
+    });
+
+    // gallery is the default; only an explicit #events link opens the detailed view
+    setView(location.hash === '#events' ? 'events' : 'gallery');
+  })();
+</script>
