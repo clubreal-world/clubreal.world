@@ -10,6 +10,7 @@ layout: default
     padding: 10px 0;
     margin: 0 0 10px;
   }
+  /* on desktop, start at the same left edge as the post column (the site indents posts 250px) */
   @media screen and (min-width: 800px) {
     .view-toggle { margin-left: 250px; }
   }
@@ -21,29 +22,34 @@ layout: default
   .view-toggle button:hover { opacity: .8; }
   .view-toggle button[aria-pressed="true"] { opacity: 1; border-bottom-color: currentColor; }
 
+  /* only one view shows at a time; gallery is the default */
   .blog-index[data-view="gallery"] .post-list    { display: none; }
   .blog-index[data-view="list"]    .post-gallery { display: none; }
 
+  /* ---- gallery: always two columns ----
+     The gallery sits inside the same article / article-container / content-container
+     wrappers the list view uses, so the site's own CSS gives it the exact same
+     position and width as a post's content column. */
   .post-grid {
-    --logo-blue: #362df3;     
-    --border-width: 4px;      
-    --border-color: #CEE4E4;     
+    --logo-blue: #362df3;     /* sampled from the logo */
+    --border-width: 4px;      /* image border thickness */
+    --border-color: #000;     /* image border color */
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
-    align-items: start;      
+    align-items: start;       /* each card keeps its own natural height */
   }
   .post-grid .card { min-width: 0; }
-
+  /* the border is on the image only, not the caption or the whole gallery */
   .post-grid .tile {
     display: block;
     overflow: hidden;
     border: var(--border-width) solid var(--border-color);
   }
   .post-grid .tile img {
-    width: 100%;              
-    height: auto;             
-    margin: 0;                
+    width: 100%;              /* same width for every image */
+    height: auto;             /* full image, never cropped */
+    margin: 0;                /* the site gives every img a 20px vertical margin */
     top: 0;
     display: block;
     transition: transform .3s ease, opacity .3s ease;
@@ -80,6 +86,17 @@ layout: default
     background: transparent;
   }
 
+  /* label above the past-events grid */
+  .past-label {
+    margin: 32px 0 14px;
+    padding: 0 0 6px;
+    font-size: 20px;
+    font-weight: bold;
+    border-bottom: 1px solid currentColor;
+  }
+  .post-grid + .past-label { margin-top: 40px; }
+
+  /* ---- welcome dialog (Windows 95 style) ---- */
   .w95-overlay {
     position: fixed; inset: 0; z-index: 10000;
     display: flex; align-items: center; justify-content: center;
@@ -142,25 +159,46 @@ layout: default
     <button type="button" data-view="list" aria-pressed="false">list</button>
   </div>
 
-  <!-- GALLERY VIEW (default) -->
+  {% comment %} GALLERY VIEW (default) {% endcomment %}
   <article class="post-gallery">
     <div class="article-container">
       <div class="content-container">
-        <div class="post-grid">
-          {% for post in paginator.posts %}
-            {% assign src = nil %}
+        {% comment %}
+          Split posts into upcoming and past by their `showdate` front matter (mm/dd/yyyy).
+          A post is "past" only if its showdate is before today (the build date);
+          posts with no showdate stay in the main grid.
+        {% endcomment %}
+        {% assign today = 'now' | date: '%Y%m%d' | plus: 0 %}
+        {% assign upcoming_cards = '' %}
+        {% assign past_cards = '' %}
 
-            {% comment %} Use an `image:` front-matter field if a post has one, else the first <img> in the post body. {% endcomment %}
-            {% if post.image %}
-              {% assign src = post.image %}
-            {% else %}
-              {% assign parts = post.content | split: '<img' %}
-              {% if parts.size > 1 %}
-                {% assign src = parts[1] | split: 'src="' | last | split: '"' | first %}
+        {% for post in paginator.posts %}
+          {% assign src = nil %}
+
+          {% comment %} Use an `image:` front-matter field if a post has one, else the first <img> in the post body. {% endcomment %}
+          {% if post.image %}
+            {% assign src = post.image %}
+          {% else %}
+            {% assign parts = post.content | split: '<img' %}
+            {% if parts.size > 1 %}
+              {% assign src = parts[1] | split: 'src="' | last | split: '"' | first %}
+            {% endif %}
+          {% endif %}
+
+          {% if src != blank %}
+            {% assign is_past = false %}
+            {% comment %} showdate is written mm/dd/yyyy; turn it into a yyyymmdd number so dates compare correctly. {% endcomment %}
+            {% assign sd = post.showdate | append: '' | strip | split: '/' %}
+            {% if sd.size == 3 %}
+              {% assign show_num = sd[2] | times: 10000 %}
+              {% assign show_month = sd[0] | times: 100 %}
+              {% assign show_num = show_num | plus: show_month | plus: sd[1] %}
+              {% if show_num < today %}
+                {% assign is_past = true %}
               {% endif %}
             {% endif %}
 
-            {% if src != blank %}
+            {% capture card %}
               <div class="card">
                 <a class="tile" href="{{ post.url }}" title="{{ post.title | escape }}">
                   <img src="{{ src }}" alt="{{ post.title | escape }}" loading="lazy">
@@ -173,14 +211,32 @@ layout: default
                   {% endif %}
                 </div>
               </div>
+            {% endcapture %}
+
+            {% if is_past %}
+              {% capture past_cards %}{{ past_cards }}{{ card }}{% endcapture %}
+            {% else %}
+              {% capture upcoming_cards %}{{ upcoming_cards }}{{ card }}{% endcapture %}
             {% endif %}
-          {% endfor %}
-        </div>
+          {% endif %}
+        {% endfor %}
+
+        {% assign upcoming_check = upcoming_cards | strip %}
+        {% if upcoming_check != blank %}
+          <div class="post-grid">{{ upcoming_cards }}</div>
+        {% endif %}
+
+        {% assign past_check = past_cards | strip %}
+        {% if past_check != blank %}
+          <h2 class="past-label">past events</h2>
+          <div class="post-grid">{{ past_cards }}</div>
+        {% endif %}
       </div>
       <footer></footer>
     </div>
   </article>
 
+  {% comment %} LIST VIEW (your original detailed layout) {% endcomment %}
   <div class="post-list">
     {% assign index = true %}
     {% for post in paginator.posts %}
@@ -221,27 +277,27 @@ layout: default
       b.addEventListener('click', function () {
         var view = b.getAttribute('data-view');
         setView(view);
-        
+        /* keep the list view linkable; the plain URL always means gallery */
         history.replaceState(null, '', view === 'list' ? '#list' : location.pathname + location.search);
       });
     });
 
-
+    /* gallery is the default; only an explicit #list link opens the list view */
     setView(location.hash === '#list' ? 'list' : 'gallery');
   })();
 </script>
 
-
+{% comment %} WELCOME DIALOG {% endcomment %}
 <div class="w95-overlay" id="welcome-overlay" hidden>
   <div class="w95-window" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
     <div class="w95-titlebar">
-      <span id="welcome-title">clubreal.world</span>
+      <span id="welcome-title">Club Real World</span>
       <button type="button" class="w95-btn w95-close" id="welcome-x" aria-label="Close">&times;</button>
     </div>
     <div class="w95-body">
       <img class="w95-logo" src="/images/fixed_logo.png" alt="Club Real World">
       <p class="w95-statement" lang="en">Club Real World events are all ages and welcome to all our neighbors in the Lehigh Valley, regardless of race, gender, or belief systems.</p>
-      <p class="w95-statement" lang="es">Los eventos de Club Real World son para todas las edades y damos la bienvenida a todos nuestros vecinos del Lehigh Valley, sin importar su raza, género o creencias.</p>
+      <p class="w95-statement" lang="es">Los eventos de Club Real World son para todas las edades y damos la bienvenida a todos nuestros vecinos del Valle de Lehigh, sin importar su raza, género o creencias.</p>
       <button type="button" class="w95-btn w95-ok" id="welcome-ok">OK</button>
     </div>
   </div>
@@ -253,7 +309,7 @@ layout: default
     var okBtn = document.getElementById('welcome-ok');
     var xBtn = document.getElementById('welcome-x');
 
-
+    /* show once per browser session, so it doesn't reappear every time someone returns to the home page */
     try { if (sessionStorage.getItem('crw-welcome-seen')) { return; } } catch (e) {}
 
     function close() {
@@ -264,7 +320,7 @@ layout: default
     }
     function onKey(e) {
       if (e.key === 'Escape') { close(); }
-      else if (e.key === 'Tab') {            
+      else if (e.key === 'Tab') {            /* keep keyboard focus inside the dialog */
         e.preventDefault();
         (document.activeElement === okBtn ? xBtn : okBtn).focus();
       }
