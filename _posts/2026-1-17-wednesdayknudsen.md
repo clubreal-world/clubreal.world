@@ -4,6 +4,7 @@ title: "Wednesday Knudsen - 2/17/26"
 date: 2026-02-01 19:34
 categories: [gig, ambient, experimental, community venue, drone]
 blurb: An evening of ambience and Indian food in Bethlehem, PA
+showdate: 02/17/2026
 ---
 
 ClubRealWorld presents:
