@@ -25,25 +25,25 @@ layout: default
   .blog-index[data-view="list"]    .post-gallery { display: none; }
 
   .post-grid {
-    --logo-blue: #362df3;     /* sampled from the logo */
-    --border-width: 4px;      /* image border thickness */
-    --border-color: #FFFFFF;     /* image border color */
+    --logo-blue: #362df3;     
+    --border-width: 4px;      
+    --border-color: #FFFFFF;     
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
     align-items: start;      
   }
   .post-grid .card { min-width: 0; }
-  /* the border is on the image only, not the caption or the whole gallery */
+
   .post-grid .tile {
     display: block;
     overflow: hidden;
     border: var(--border-width) solid var(--border-color);
   }
   .post-grid .tile img {
-    width: 100%;              /* same width for every image */
-    height: auto;             /* full image, never cropped */
-    margin: 0;                /* the site gives every img a 20px vertical margin */
+    width: 100%;              
+    height: auto;             
+    margin: 0;                
     top: 0;
     display: block;
     transition: transform .3s ease, opacity .3s ease;
@@ -80,7 +80,6 @@ layout: default
     background: transparent;
   }
 
-  /* ---- welcome dialog (Windows 95 style) ---- */
   .w95-overlay {
     position: fixed; inset: 0; z-index: 10000;
     display: flex; align-items: center; justify-content: center;
@@ -182,7 +181,6 @@ layout: default
     </div>
   </article>
 
-  <!-- LIST VIEW (your original detailed layout) -->
   <div class="post-list">
     {% assign index = true %}
     {% for post in paginator.posts %}
@@ -223,21 +221,21 @@ layout: default
       b.addEventListener('click', function () {
         var view = b.getAttribute('data-view');
         setView(view);
-        // keep the list view linkable; the plain URL always means gallery
+        
         history.replaceState(null, '', view === 'list' ? '#list' : location.pathname + location.search);
       });
     });
 
-    // gallery is the default; only an explicit #list link opens the list view
+
     setView(location.hash === '#list' ? 'list' : 'gallery');
   })();
 </script>
 
-<!-- WELCOME DIALOG -->
+
 <div class="w95-overlay" id="welcome-overlay" hidden>
   <div class="w95-window" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
     <div class="w95-titlebar">
-      <span id="welcome-title">Welcome to the Real World</span>
+      <span id="welcome-title">clubreal.world</span>
       <button type="button" class="w95-btn w95-close" id="welcome-x" aria-label="Close">&times;</button>
     </div>
     <div class="w95-body">
@@ -255,7 +253,7 @@ layout: default
     var okBtn = document.getElementById('welcome-ok');
     var xBtn = document.getElementById('welcome-x');
 
-    // show once per browser session, so it doesn't reappear every time someone returns to the home page
+
     try { if (sessionStorage.getItem('crw-welcome-seen')) { return; } } catch (e) {}
 
     function close() {
@@ -266,7 +264,7 @@ layout: default
     }
     function onKey(e) {
       if (e.key === 'Escape') { close(); }
-      else if (e.key === 'Tab') {            // keep keyboard focus inside the dialog
+      else if (e.key === 'Tab') {            
         e.preventDefault();
         (document.activeElement === okBtn ? xBtn : okBtn).focus();
       }
