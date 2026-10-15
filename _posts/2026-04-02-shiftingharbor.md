@@ -4,6 +4,7 @@ title: "Shifting Harbor - 4/9/2026"
 date: 2026-03-01 19:34
 categories: [gig, ambient, noise, experimental, folk, community venue]
 blurb: An evening of experimental sounds at a Quaker Meeting House in Bethlehem, PA
+showdate: 04/09/2026
 ---
 ClubRealWorld Presents:
 
