@@ -4,7 +4,7 @@ title: "Liam Grant / Sam Boston - 3/19/2026"
 date: 2026-02-20 19:34
 categories: [gig, folk, experimental, singer-songwriter, community venue, noise, drone]
 blurb: An evening of avant-folk, singer-songwriter and unclassifiable sounds in Allentown, PA
-showdate: 02/20/2026
+showdate: 03/19/2026
 ---
 
 ClubRealWorld presents:
