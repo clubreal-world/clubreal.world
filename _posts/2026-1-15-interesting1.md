@@ -4,6 +4,7 @@ title: "Interesting Evening #1 - 1/17/26"
 date: 2026-01-15
 categories: [interestingevening, film, video, bingo, DJs]
 blurb: An interesting evening with Bingo, video, mutlimedia performance, and DJs
+showdate: 01/17/2026
 ---
 
 ClubRealWorld presents
