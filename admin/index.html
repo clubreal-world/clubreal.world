@@ -1,0 +1,638 @@
+---
+layout: none
+permalink: /admin/
+sitemap: false
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>New post - Club Real World</title>
+<style>
+  :root {
+    --bg: #e0ffff;
+    --ink: #000;
+    --blue: #362df3;      /* logo blue */
+    --muted: #555;
+    --danger: #b00020;
+    --ok: #0a6b2d;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.4;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 24px 16px 80px; }
+  header.top { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+  header.top img { width: 80px; height: auto; display: block; }
+  h1 { font-size: 24px; margin: 0; }
+  h2 { font-size: 18px; margin: 0 0 12px; }
+
+  .panel {
+    background: #fff;
+    border: 3px solid var(--ink);
+    padding: 18px 18px 20px;
+    margin-bottom: 20px;
+  }
+  .panel[hidden], [hidden] { display: none !important; }
+
+  label { display: block; font-weight: bold; margin: 14px 0 0; }
+  label.check { font-weight: normal; display: flex; gap: 8px; align-items: center; margin-top: 12px; }
+  .hint { display: block; font-weight: normal; font-size: 14px; color: var(--muted); margin-top: 2px; }
+  input[type="text"], input[type="url"], input[type="password"], input[type="date"],
+  input[type="datetime-local"], textarea {
+    width: 100%;
+    margin-top: 4px;
+    padding: 8px 10px;
+    font: inherit;
+    border: 2px solid var(--ink);
+    border-radius: 0;
+    background: #fff;
+    color: var(--ink);
+  }
+  textarea { min-height: 70px; resize: vertical; }
+  input:focus, textarea:focus, button:focus-visible { outline: 3px solid var(--blue); outline-offset: 1px; }
+
+  button {
+    font: inherit;
+    cursor: pointer;
+    padding: 8px 18px;
+    border: 2px solid var(--ink);
+    border-radius: 0;
+    background: #fff;
+    color: var(--ink);
+  }
+  button:hover { background: #f0f0f0; }
+  button.primary { background: var(--blue); border-color: var(--blue); color: #fff; font-weight: bold; }
+  button.primary:hover { background: #fff; color: var(--blue); }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  button.small { padding: 3px 10px; font-size: 14px; }
+
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 560px) { .row2 { grid-template-columns: 1fr; } }
+
+  .performer { border: 2px solid var(--blue); padding: 10px 12px 12px; margin-top: 12px; }
+  .performer .perf-head { display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: var(--blue); }
+
+  #preview-img { display: none; max-width: 220px; margin-top: 10px; border: 3px solid var(--ink); }
+  #md { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 14px; min-height: 340px; background: #f7f7f7; }
+  #md:not([readonly]) { background: #fff; }
+
+  .msg { margin: 12px 0 0; font-size: 15px; }
+  .msg.error { color: var(--danger); font-weight: bold; }
+  .msg.ok { color: var(--ok); font-weight: bold; }
+  #log { margin: 12px 0 0; padding: 0; list-style: none; font-size: 15px; color: var(--muted); }
+  details { margin-top: 14px; }
+  summary { cursor: pointer; font-weight: bold; }
+  ol { padding-left: 22px; }
+  .signedin { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 14px; font-size: 15px; color: var(--muted); }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <header class="top">
+    <img src="/images/fixed_logo.png" alt="Club Real World">
+    <h1>new post</h1>
+  </header>
+
+  <section id="login" class="panel">
+    <h2>sign in</h2>
+    <p>Enter your GitHub access token. It acts as the password: only someone with a valid token can publish, and it is only ever sent to GitHub.</p>
+    <label for="token">Access token</label>
+    <input type="password" id="token" autocomplete="off" spellcheck="false">
+    <label class="check"><input type="checkbox" id="remember"> keep me signed in on this device</label>
+    <p style="margin-top:14px"><button type="button" id="signin" class="primary">sign in</button></p>
+    <p id="login-msg" class="msg" role="alert"></p>
+    <details>
+      <summary>how do I get a token?</summary>
+      <ol>
+        <li>Sign in to GitHub, then open <strong>Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Fine-grained tokens</strong>.</li>
+        <li>Click <strong>Generate new token</strong>. Pick an expiration date.</li>
+        <li>Under <strong>Repository access</strong>, choose <strong>Only select repositories</strong> and pick <strong>clubreal-world/clubreal.world</strong>.</li>
+        <li>Under <strong>Permissions &rarr; Repository permissions</strong>, set <strong>Contents</strong> to <strong>Read and write</strong>.</li>
+        <li>Generate the token, copy it, and paste it above.</li>
+      </ol>
+    </details>
+  </section>
+
+  <form id="post-form" class="panel" hidden autocomplete="off">
+    <div class="signedin">
+      <span id="who">signed in</span>
+      <button type="button" id="signout" class="small">sign out</button>
+    </div>
+
+    <h2>event</h2>
+
+    <label for="title">Title
+      <span class="hint">Shown on the site, like: jason calhoun - 10/22/26</span>
+    </label>
+    <input type="text" id="title" required>
+
+    <div class="row2">
+      <div>
+        <label for="showdate">Show date</label>
+        <input type="date" id="showdate" required>
+      </div>
+      <div>
+        <label for="postdate">Post date and time
+          <span class="hint">Leave as now so it publishes right away</span>
+        </label>
+        <input type="datetime-local" id="postdate" required>
+      </div>
+    </div>
+
+    <label for="slug">Web address name
+      <span class="hint" id="slug-hint">The page will be at clubreal.world/&hellip;</span>
+    </label>
+    <input type="text" id="slug" required pattern="[a-z0-9\-]+">
+
+    <label for="categories">Categories
+      <span class="hint">Separate with commas, like: gig, electronic, ambient</span>
+    </label>
+    <input type="text" id="categories">
+
+    <label for="blurb">Blurb
+      <span class="hint">One short sentence</span>
+    </label>
+    <input type="text" id="blurb">
+
+    <label for="ticketlink">Ticket link
+      <span class="hint">Optional. If left empty, no tickets line or button is added.</span>
+    </label>
+    <input type="url" id="ticketlink" placeholder="https://">
+
+    <label for="image">Image</label>
+    <input type="file" id="image" accept="image/png,image/jpeg,image/gif,image/webp" required>
+    <img id="preview-img" alt="Image preview">
+
+    <h2 style="margin-top:28px">page text</h2>
+
+    <label for="intro">Opening line</label>
+    <input type="text" id="intro" value="ClubRealWorld Presents:">
+
+    <label>Performers</label>
+    <div id="performers"></div>
+    <p><button type="button" id="add-performer" class="small">+ add performer</button></p>
+
+    <label for="notes">Extra notes
+      <span class="hint">Optional. Shown after the performers.</span>
+    </label>
+    <textarea id="notes"></textarea>
+
+    <label for="venue">Venue</label>
+    <input type="text" id="venue" list="venues" placeholder="Lit Coffee">
+    <datalist id="venues">
+      <option value="Lit Coffee">
+      <option value="National Sokols">
+      <option value="Connexions Gallery">
+      <option value="Lehigh Valley Friends Meeting">
+    </datalist>
+
+    <div class="row2">
+      <div>
+        <label for="location">City or address</label>
+        <input type="text" id="location" value="Bethlehem PA">
+      </div>
+      <div>
+        <label for="timeprice">Time and price</label>
+        <input type="text" id="timeprice" value="7pm // $10">
+      </div>
+    </div>
+
+    <h2 style="margin-top:28px">preview</h2>
+    <p class="hint" style="margin-top:0">This is exactly what will be saved. The day line (for example, Thursday, October 22) comes from the show date.</p>
+    <textarea id="md" readonly spellcheck="false"></textarea>
+    <label class="check"><input type="checkbox" id="manual"> edit the text above by hand</label>
+
+    <p style="margin-top:22px">
+      <button type="submit" id="publish" class="primary">publish post</button>
+    </p>
+    <p id="form-msg" class="msg" role="alert"></p>
+    <ul id="log"></ul>
+  </form>
+
+  <section id="done" class="panel" hidden>
+    <h2>published</h2>
+    <p class="msg ok" style="margin-top:0">Your post was saved to GitHub.</p>
+    <p>The site takes a minute or two to rebuild. Then it will be live at <a id="done-link" href="#" target="_blank" rel="noopener"></a>.</p>
+    <p><a id="done-commit" href="#" target="_blank" rel="noopener">view the change on GitHub</a></p>
+    <p><button type="button" id="another" class="primary">add another post</button></p>
+  </section>
+
+</main>
+
+{% raw %}
+<script>
+(function () {
+  /* ---- settings: change these if the repo or branch ever changes ---- */
+  var OWNER = 'clubreal-world';
+  var REPO = 'clubreal.world';
+  var BRANCH = 'source';
+  var POSTS_DIR = '_posts';
+  var IMAGES_DIR = 'images';
+  var SITE = 'https://clubreal.world';
+  var STORE_KEY = 'crw-admin-token';
+
+  var token = null;
+  var slugTouched = false;
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---- small helpers ---- */
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+  function nowLocalValue() {
+    var d = new Date();
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) +
+      'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+
+  function slugify(title) {
+    var base = title.split(' - ')[0];
+    return base.toLowerCase().replace(/[^a-z0-9]+/g, '');
+  }
+
+  function yamlQuote(s) {
+    return '"' + s.replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
+  }
+
+  function yamlValue(s) {
+    return /[:#"'\[\]{}]|^[-?&*!|>%@`]/.test(s) ? yamlQuote(s) : s;
+  }
+
+  function oneLine(s) { return s.replace(/\s*\n\s*/g, ' ').trim(); }
+
+  function showdateParts() {
+    var v = $('showdate').value;
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v);
+    if (!m) { return null; }
+    var y = +m[1], mo = +m[2], d = +m[3];
+    var dt = new Date(y, mo - 1, d);
+    return {
+      mdy: pad(mo) + '/' + pad(d) + '/' + y,
+      day: dt.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
+    };
+  }
+
+  function imageExt(file) {
+    var byType = { 'image/png': 'png', 'image/jpeg': 'jpg', 'image/gif': 'gif', 'image/webp': 'webp' };
+    if (byType[file.type]) { return byType[file.type]; }
+    var m = /\.([a-z0-9]+)$/i.exec(file.name);
+    return m ? m[1].toLowerCase() : 'png';
+  }
+
+  function provisionalImageName() {
+    var f = $('image').files[0];
+    var slug = $('slug').value.trim() || 'image';
+    return slug + '.' + (f ? imageExt(f) : 'png');
+  }
+
+  /* ---- performers ---- */
+  function addPerformer() {
+    var wrap = document.createElement('div');
+    wrap.className = 'performer';
+    wrap.innerHTML =
+      '<div class="perf-head"><span>performer</span>' +
+      '<button type="button" class="small remove">remove</button></div>' +
+      '<label>Name</label><input type="text" class="p-name">' +
+      '<label>Link <span class="hint">Optional, like a Bandcamp page</span></label>' +
+      '<input type="url" class="p-link" placeholder="https://">' +
+      '<label>Description</label><textarea class="p-desc"></textarea>';
+    wrap.querySelector('.remove').addEventListener('click', function () {
+      wrap.remove();
+      regenerate();
+    });
+    $('performers').appendChild(wrap);
+  }
+
+  /* ---- build the markdown ---- */
+  function buildMarkdown() {
+    var title = $('title').value.trim();
+    var cats = $('categories').value.split(',').map(function (c) {
+      return c.replace(/[\[\]",]/g, '').trim();
+    }).filter(Boolean);
+    var blurb = oneLine($('blurb').value);
+    var ticket = $('ticketlink').value.trim();
+    var sd = showdateParts();
+    var postdate = $('postdate').value.replace('T', ' ');
+
+    var fm = ['---', 'layout: post', 'title: ' + yamlQuote(title), 'date: ' + postdate];
+    fm.push('categories: [' + cats.join(', ') + ']');
+    if (blurb) { fm.push('blurb: ' + yamlValue(blurb)); }
+    if (ticket) { fm.push('ticketlink: ' + ticket); }
+    fm.push('showdate: ' + (sd ? sd.mdy : ''));
+    fm.push('---');
+
+    var parts = [];
+    var intro = $('intro').value.trim();
+    if (intro) { parts.push(intro); }
+    if ($('image').files[0]) { parts.push('<img src="/images/' + provisionalImageName() + '">'); }
+
+    Array.prototype.forEach.call(document.querySelectorAll('#performers .performer'), function (p) {
+      var name = p.querySelector('.p-name').value.trim();
+      var link = p.querySelector('.p-link').value.trim();
+      var desc = oneLine(p.querySelector('.p-desc').value);
+      if (!name) { return; }
+      var line = link ? '[' + name + '](' + link + ')' : name;
+      if (desc) { line += ' - ' + desc; }
+      parts.push(line);
+    });
+
+    var notes = $('notes').value.trim();
+    if (notes) { parts.push(notes); }
+
+    if (sd) { parts.push(sd.day); }
+    ['venue', 'location', 'timeprice'].forEach(function (id) {
+      var v = $(id).value.trim();
+      if (v) { parts.push(v); }
+    });
+    if (ticket) { parts.push('[Tickets](' + ticket + ')'); }
+
+    return fm.join('\n') + '\n' + parts.join('\n\n') + '\n';
+  }
+
+  function regenerate() {
+    if ($('manual').checked) { return; }
+    $('md').value = buildMarkdown();
+  }
+
+  /* ---- GitHub API ---- */
+  function api(method, path, body) {
+    return fetch('https://api.github.com' + path, {
+      method: method,
+      headers: {
+        'Accept': 'application/vnd.github+json',
+        'Authorization': 'Bearer ' + token,
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Content-Type': 'application/json'
+      },
+      body: body ? JSON.stringify(body) : undefined
+    }).then(function (res) {
+      return res.text().then(function (txt) {
+        var data = null;
+        try { data = txt ? JSON.parse(txt) : null; } catch (e) { data = null; }
+        return { status: res.status, ok: res.ok, data: data };
+      });
+    });
+  }
+
+  function apiOrThrow(method, path, body, what) {
+    return api(method, path, body).then(function (r) {
+      if (r.ok) { return r.data; }
+      var msg = (r.data && r.data.message) ? r.data.message : ('HTTP ' + r.status);
+      if (r.status === 401) { msg = 'GitHub rejected the token. Sign out and sign in again.'; }
+      throw new Error((what ? what + ': ' : '') + msg);
+    });
+  }
+
+  function encodePath(p) { return p.split('/').map(encodeURIComponent).join('/'); }
+
+  function fileExists(path) {
+    return api('GET', '/repos/' + OWNER + '/' + REPO + '/contents/' + encodePath(path) +
+      '?ref=' + encodeURIComponent(BRANCH)).then(function (r) {
+      if (r.status === 200) { return true; }
+      if (r.status === 404) { return false; }
+      throw new Error('Could not check for existing files (HTTP ' + r.status + ').');
+    });
+  }
+
+  function fileToBase64(file) {
+    return new Promise(function (resolve, reject) {
+      var fr = new FileReader();
+      fr.onload = function () { resolve(String(fr.result).split(',')[1]); };
+      fr.onerror = function () { reject(new Error('Could not read the image file.')); };
+      fr.readAsDataURL(file);
+    });
+  }
+
+  /* ---- sign in / out ---- */
+  function showLogin(msg) {
+    $('login').hidden = false;
+    $('post-form').hidden = true;
+    $('done').hidden = true;
+    $('login-msg').className = 'msg error';
+    $('login-msg').textContent = msg || '';
+  }
+
+  function signIn(candidate, remember) {
+    token = candidate;
+    $('login-msg').className = 'msg';
+    $('login-msg').textContent = 'Checking…';
+    return api('GET', '/repos/' + OWNER + '/' + REPO).then(function (r) {
+      if (r.status === 401) { throw new Error('GitHub did not accept that token.'); }
+      if (r.status === 404) { throw new Error('That token cannot see the ' + OWNER + '/' + REPO + ' repository.'); }
+      if (!r.ok) { throw new Error('GitHub returned an error (HTTP ' + r.status + ').'); }
+      if (r.data && r.data.permissions && r.data.permissions.push === false) {
+        throw new Error('That token can read the repository but not change it. It needs Contents: Read and write.');
+      }
+      try {
+        if (remember) { localStorage.setItem(STORE_KEY, candidate); }
+        else { localStorage.removeItem(STORE_KEY); }
+      } catch (e) { /* storage unavailable */ }
+      $('login').hidden = true;
+      $('post-form').hidden = false;
+      $('who').textContent = 'signed in to ' + OWNER + '/' + REPO;
+      $('login-msg').textContent = '';
+      regenerate();
+    }).catch(function (err) {
+      token = null;
+      showLogin(err.message);
+    });
+  }
+
+  function signOut() {
+    token = null;
+    try { localStorage.removeItem(STORE_KEY); } catch (e) { /* ignore */ }
+    $('token').value = '';
+    showLogin('');
+  }
+
+  /* ---- publish ---- */
+  function log(text) {
+    var li = document.createElement('li');
+    li.textContent = text;
+    $('log').appendChild(li);
+  }
+
+  function setMsg(text, kind) {
+    $('form-msg').className = 'msg' + (kind ? ' ' + kind : '');
+    $('form-msg').textContent = text;
+  }
+
+  function validate() {
+    if (!$('title').value.trim()) { return 'Add a title.'; }
+    if (!showdateParts()) { return 'Choose the show date.'; }
+    if (!$('postdate').value) { return 'Choose the post date and time.'; }
+    if (!/^[a-z0-9-]+$/.test($('slug').value.trim())) { return 'The web address name can only use lowercase letters, numbers and dashes.'; }
+    if (!$('image').files[0]) { return 'Choose an image.'; }
+    var t = $('ticketlink').value.trim();
+    if (t && !/^https?:\/\//i.test(t)) { return 'The ticket link must start with http:// or https://'; }
+    return '';
+  }
+
+  function publish(ev) {
+    ev.preventDefault();
+    var problem = validate();
+    if (problem) { setMsg(problem, 'error'); return; }
+
+    var btn = $('publish');
+    btn.disabled = true;
+    $('log').innerHTML = '';
+    setMsg('', '');
+
+    var slug = $('slug').value.trim();
+    var datePart = $('postdate').value.slice(0, 10);
+    var postPath = POSTS_DIR + '/' + datePart + '-' + slug + '.md';
+    var file = $('image').files[0];
+    var ext = imageExt(file);
+    var provisional = provisionalImageName();
+    var title = $('title').value.trim();
+    var imgName, imgPath, markdown, imgB64, headSha, baseTree;
+    var repoPath = '/repos/' + OWNER + '/' + REPO;
+
+    log('Checking for name conflicts…');
+    fileExists(postPath).then(function (exists) {
+      if (exists) { throw new Error('A post named ' + postPath + ' already exists. Change the web address name or the post date.'); }
+      var n = 1;
+      function next() {
+        imgName = slug + (n === 1 ? '' : n) + '.' + ext;
+        imgPath = IMAGES_DIR + '/' + imgName;
+        return fileExists(imgPath).then(function (taken) {
+          if (!taken) { return; }
+          n += 1;
+          if (n > 20) { throw new Error('Too many images already use that name.'); }
+          return next();
+        });
+      }
+      return next();
+    }).then(function () {
+      markdown = $('md').value;
+      if (imgName !== provisional) {
+        markdown = markdown.split('/images/' + provisional).join('/images/' + imgName);
+      }
+      if (markdown.indexOf('/images/' + imgName) === -1) {
+        log('Note: the text does not point to the uploaded image (' + imgName + ').');
+      }
+      log('Reading the image…');
+      return fileToBase64(file);
+    }).then(function (b64) {
+      imgB64 = b64;
+      log('Preparing the commit…');
+      return apiOrThrow('GET', repoPath + '/git/ref/heads/' + encodeURIComponent(BRANCH), null, 'Finding the ' + BRANCH + ' branch');
+    }).then(function (ref) {
+      headSha = ref.object.sha;
+      return apiOrThrow('GET', repoPath + '/git/commits/' + headSha, null, 'Reading the latest commit');
+    }).then(function (commit) {
+      baseTree = commit.tree.sha;
+      log('Uploading the image…');
+      return apiOrThrow('POST', repoPath + '/git/blobs', { content: imgB64, encoding: 'base64' }, 'Uploading the image');
+    }).then(function (imgBlob) {
+      return apiOrThrow('POST', repoPath + '/git/blobs', { content: markdown, encoding: 'utf-8' }, 'Saving the post').then(function (mdBlob) {
+        return [imgBlob, mdBlob];
+      });
+    }).then(function (blobs) {
+      log('Committing…');
+      return apiOrThrow('POST', repoPath + '/git/trees', {
+        base_tree: baseTree,
+        tree: [
+          { path: imgPath, mode: '100644', type: 'blob', sha: blobs[0].sha },
+          { path: postPath, mode: '100644', type: 'blob', sha: blobs[1].sha }
+        ]
+      }, 'Building the commit');
+    }).then(function (tree) {
+      return apiOrThrow('POST', repoPath + '/git/commits', {
+        message: 'Add post: ' + title,
+        tree: tree.sha,
+        parents: [headSha]
+      }, 'Creating the commit');
+    }).then(function (commit) {
+      return apiOrThrow('PATCH', repoPath + '/git/refs/heads/' + encodeURIComponent(BRANCH), { sha: commit.sha }, 'Publishing to ' + BRANCH).then(function () {
+        return commit;
+      });
+    }).then(function (commit) {
+      $('post-form').hidden = true;
+      $('done').hidden = false;
+      var link = $('done-link');
+      link.href = SITE + '/' + slug;
+      link.textContent = SITE.replace('https://', '') + '/' + slug;
+      $('done-commit').href = 'https://github.com/' + OWNER + '/' + REPO + '/commit/' + commit.sha;
+      window.scrollTo(0, 0);
+    }).catch(function (err) {
+      setMsg(err.message + ' Nothing was published.', 'error');
+    }).then(function () {
+      btn.disabled = false;
+    });
+  }
+
+  function resetForm() {
+    $('post-form').reset();
+    $('performers').innerHTML = '';
+    addPerformer();
+    $('postdate').value = nowLocalValue();
+    $('preview-img').style.display = 'none';
+    $('md').readOnly = true;
+    slugTouched = false;
+    $('slug-hint').textContent = 'The page will be at clubreal.world/…';
+    $('log').innerHTML = '';
+    setMsg('', '');
+    $('done').hidden = true;
+    $('post-form').hidden = false;
+    regenerate();
+    window.scrollTo(0, 0);
+  }
+
+  /* ---- wire up ---- */
+  $('signin').addEventListener('click', function () {
+    var t = $('token').value.trim();
+    if (!t) { showLogin('Paste your token first.'); return; }
+    signIn(t, $('remember').checked);
+  });
+  $('token').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); $('signin').click(); }
+  });
+  $('signout').addEventListener('click', signOut);
+  $('add-performer').addEventListener('click', function () { addPerformer(); });
+  $('another').addEventListener('click', resetForm);
+  $('post-form').addEventListener('submit', publish);
+
+  $('post-form').addEventListener('input', function (e) {
+    if (e.target === $('md')) { return; }
+    if (e.target === $('title') && !slugTouched) { $('slug').value = slugify($('title').value); }
+    if (e.target === $('slug')) { slugTouched = true; }
+    var s = $('slug').value.trim();
+    $('slug-hint').textContent = 'The page will be at clubreal.world/' + (s || '…');
+    regenerate();
+  });
+
+  $('manual').addEventListener('change', function () {
+    $('md').readOnly = !$('manual').checked;
+    if (!$('manual').checked) { regenerate(); }
+  });
+
+  $('image').addEventListener('change', function () {
+    var f = $('image').files[0];
+    var img = $('preview-img');
+    if (!f) { img.style.display = 'none'; return; }
+    img.src = URL.createObjectURL(f);
+    img.style.display = 'block';
+    regenerate();
+  });
+
+  $('postdate').value = nowLocalValue();
+  addPerformer();
+  regenerate();
+
+  var saved = null;
+  try { saved = localStorage.getItem(STORE_KEY); } catch (e) { saved = null; }
+  if (saved) { $('remember').checked = true; signIn(saved, true); }
+})();
+</script>
+{% endraw %}
+</body>
+</html>
