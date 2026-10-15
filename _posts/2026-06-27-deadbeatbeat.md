@@ -4,6 +4,7 @@ title: "Deadbeat Beat - 7/10/26"
 date: 2026-06-20 19:34
 categories: [gig, indie rock, experimental, lofi]
 blurb: An evening of upbeat indie rock in Bethlehem PA
+showdate: 07/10/2026
 ---
 ClubRealWorld Presents:
 
