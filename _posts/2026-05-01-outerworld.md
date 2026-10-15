@@ -4,6 +4,7 @@ title: "Outer World - 5/01/2026"
 date: 2026-04-04 19:34
 categories: [gig, pop, lofi, noise, psychedelic]
 blurb: An evening of psychedelic music in Bethlehem, PA
+showdate: 05/01/2026
 ---
 ClubRealWorld Presents:
 
