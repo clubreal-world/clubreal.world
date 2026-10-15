@@ -10,7 +10,6 @@ layout: default
     padding: 10px 0;
     margin: 0 0 10px;
   }
-  /* on desktop, start at the same left edge as the post column (the site indents posts 250px) */
   @media screen and (min-width: 800px) {
     .view-toggle { margin-left: 250px; }
   }
@@ -22,22 +21,17 @@ layout: default
   .view-toggle button:hover { opacity: .8; }
   .view-toggle button[aria-pressed="true"] { opacity: 1; border-bottom-color: currentColor; }
 
-  /* only one view shows at a time; gallery is the default */
   .blog-index[data-view="gallery"] .post-list    { display: none; }
   .blog-index[data-view="list"]    .post-gallery { display: none; }
 
-  /* ---- gallery: always two columns ----
-     The gallery sits inside the same article / article-container / content-container
-     wrappers the list view uses, so the site's own CSS gives it the exact same
-     position and width as a post's content column. */
   .post-grid {
     --logo-blue: #362df3;     /* sampled from the logo */
     --border-width: 4px;      /* image border thickness */
-    --border-color: #000;     /* image border color */
+    --border-color: #FFFFFF;     /* image border color */
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
-    align-items: start;       /* each card keeps its own natural height */
+    align-items: start;      
   }
   .post-grid .card { min-width: 0; }
   /* the border is on the image only, not the caption or the whole gallery */
