@@ -154,16 +154,9 @@ layout: default
     <button type="button" data-view="gallery" aria-pressed="true">gallery</button>
     <button type="button" data-view="list" aria-pressed="false">list</button>
   </div>
-
-  {% comment %} GALLERY VIEW (default) {% endcomment %}
   <article class="post-gallery">
     <div class="article-container">
       <div class="content-container">
-        {% comment %}
-          Split posts into upcoming and past by their `showdate` front matter (mm/dd/yyyy).
-          A post is "past" only if its showdate is before today (the build date);
-          posts with no showdate stay in the main grid.
-        {% endcomment %}
         {% assign today = 'now' | date: '%Y%m%d' | plus: 0 %}
         {% assign upcoming_cards = '' %}
         {% assign past_cards = '' %}
@@ -171,7 +164,6 @@ layout: default
         {% for post in paginator.posts %}
           {% assign src = nil %}
 
-          {% comment %} Use an `image:` front-matter field if a post has one, else the first <img> in the post body. {% endcomment %}
           {% if post.image %}
             {% assign src = post.image %}
           {% else %}
@@ -183,7 +175,7 @@ layout: default
 
           {% if src != blank %}
             {% assign is_past = false %}
-            {% comment %} showdate is written mm/dd/yyyy; turn it into a yyyymmdd number so dates compare correctly. {% endcomment %}
+            
             {% assign sd = post.showdate | append: '' | strip | split: '/' %}
             {% if sd.size == 3 %}
               {% assign show_num = sd[2] | times: 10000 %}
@@ -232,7 +224,6 @@ layout: default
     </div>
   </article>
 
-  {% comment %} LIST VIEW (your original detailed layout) {% endcomment %}
   <div class="post-list">
     {% assign index = true %}
     {% for post in paginator.posts %}
@@ -283,7 +274,6 @@ layout: default
   })();
 </script>
 
-{% comment %} WELCOME DIALOG {% endcomment %}
 <div class="w95-overlay" id="welcome-overlay" hidden>
   <div class="w95-window" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
     <div class="w95-titlebar">
