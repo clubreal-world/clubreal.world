@@ -4,6 +4,7 @@ title: "Psychedelic Psummer - 7/17/26"
 date: 2026-07-01 19:34
 categories: [gig, psychedelic, experimental, noise, poetry]
 blurb: A mind-expanding night in Bethlehem PA
+showdate: 07/17/2026
 ---
 ClubRealWorld Presents:
 
