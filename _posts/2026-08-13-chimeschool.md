@@ -4,6 +4,7 @@ title: "Chime School - 8/21/26"
 date: 2026-08-12 19:34
 categories: [gig, indie, pop, rock]
 blurb: A night of jangle pop in Bethlehem PA
+showdate: 08/21/2026
 ---
 ClubRealWorld Presents:
 
