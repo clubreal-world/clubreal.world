@@ -4,7 +4,6 @@ title: "Christina's Trip - 10/17/26"
 date: 2026-09-27 19:34
 categories: [gig, indie, noise pop, rock]
 blurb: A night of noisy pop music in Bethlehem PA
-ticketlink: https://club-real-world.kit.com/products/christinastrip
 showdate: 10/17/2026
 ---
 ClubRealWorld Presents:
