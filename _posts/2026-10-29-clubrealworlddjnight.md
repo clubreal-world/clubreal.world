@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "ClubRealWorld DJ Night"
+title: "ClubRealWorld DJ Night - 11/4/2026"
 date: 2026-10-29 11:21
 categories: [gig, dj]
 blurb: Hang with CRW as we spin records at Bonn Place Brewing 7-9 pm
