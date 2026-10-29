@@ -10,6 +10,8 @@ ClubRealWorld Presents:
 
 <img src="/images/clubrealworlddjnight.jpg">
 
+Hang with CRW as we spin records at Bonn Place Brewing from 7-9 pm
+
 Wednesday, November 4
 
 Bonn Place Brewing 
