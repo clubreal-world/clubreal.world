@@ -14,6 +14,6 @@ Wednesday, November 4
 
 Bonn Place Brewing
 
-Bethlehem PA
+Bethlehem PA 
 
 7pm // FREE (but buy drinks @ Bonn)
