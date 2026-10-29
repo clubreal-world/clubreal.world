@@ -12,7 +12,7 @@ ClubRealWorld Presents:
 
 Wednesday, November 4
 
-Bonn Place Brewing
+Bonn Place Brewing 
 
 Bethlehem PA 
 
