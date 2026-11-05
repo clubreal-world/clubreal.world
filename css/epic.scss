@@ -14,7 +14,7 @@ body > div > div {
 body > div > div > header {
   display: flex;
   justify-content: space-between;
-  padding-top: 48px;
+  padding-top: 30px;
 
   ul li:first-child {
     font-weight: bold;
@@ -22,8 +22,8 @@ body > div > div > header {
 }
 
 body > div > div > section > header#page {
-  margin-top: 160px;
-  margin-bottom: 160px;
+  margin-top: 75px;
+  margin-bottom: 75px;
 
   // Title
   h1 {
