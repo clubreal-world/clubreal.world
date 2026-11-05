@@ -6,7 +6,7 @@ categories: [gig, dj]
 blurb: Hang with CRW as we spin records at Bonn Place Brewing 7-9 pm
 showdate: 11/04/2026
 ---
-ClubRealWorld Presents:
+ClubRealWorld Presents: 
 
 <img src="/images/clubrealworlddjnight.jpg">
 
